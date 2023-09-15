@@ -49,7 +49,8 @@ public class HealthController {
         this.persistService = persistService;
         this.apiCommands = apiCommands;
     }
-    
+
+    //活性探测
     /**
      * Whether the Nacos is in broken states or not, and cannot recover except by being restarted.
      *
@@ -60,7 +61,8 @@ public class HealthController {
     public ResponseEntity<String> liveness() {
         return ResponseEntity.ok().body("OK");
     }
-    
+
+    //就绪探测
     /**
      * Ready to receive the request or not.
      *

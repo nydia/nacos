@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Iterator;
 
+//包装 http 客户端请求并执行相应的拦截
+
 /**
  * Wrap http client request and perform corresponding interception.
  *

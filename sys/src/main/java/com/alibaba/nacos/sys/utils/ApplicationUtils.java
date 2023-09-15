@@ -233,7 +233,8 @@ public class ApplicationUtils implements ApplicationContextInitializer<Configura
     public static void injectContext(ConfigurableApplicationContext context) {
         ApplicationUtils.applicationContext = context;
     }
-    
+
+    //加载的时候把 context 注入到这个类，因为当前类是静态类，所以直接可以用类获取这个属性里面的相关值。
     @Override
     public void initialize(ConfigurableApplicationContext context) {
         applicationContext = context;
