@@ -226,7 +226,8 @@ public class ExternalDataSourceServiceImpl implements DataSourceService {
     public String getDataSourceType() {
         return dataSourceType;
     }
-    
+
+    //选举 leader 任务
     class SelectMasterTask implements Runnable {
         
         @Override

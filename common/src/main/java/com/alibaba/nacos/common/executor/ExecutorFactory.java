@@ -26,6 +26,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+//统一线程池创建工厂，通过线程池管理器主动创建线程池资源，实现统一生命周期管理
 /**
  * Unified thread pool creation factory, and actively create thread pool resources by ThreadPoolManager for unified life
  * cycle management {@link ExecutorFactory.Managed}.

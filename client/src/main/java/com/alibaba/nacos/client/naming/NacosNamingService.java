@@ -72,7 +72,8 @@ public class NacosNamingService implements NamingService {
     private InstancesChangeNotifier changeNotifier;
     
     private NamingClientProxy clientProxy;
-    
+
+    //使用客户端代理管理命名服务客户端：实现方式有http、grpc，以及mock方式
     private String notifierEventScope;
     
     public NacosNamingService(String serverList) throws NacosException {

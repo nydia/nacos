@@ -18,6 +18,7 @@ package com.alibaba.nacos.common.model;
 
 import java.io.Serializable;
 
+//Rest的返回结果包装
 /**
  * Rest result.
  *
@@ -31,7 +32,7 @@ public class RestResult<T> implements Serializable {
     
     private String message;
     
-    private T data;
+    private T data;//rest请求返回结果。比如心跳检测的返回结果：{"clientBeatInterval":5000,"code":10200,"lightBeatEnabled":true}
     
     public RestResult() {
     }
