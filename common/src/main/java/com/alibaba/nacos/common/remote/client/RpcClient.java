@@ -73,7 +73,8 @@ public abstract class RpcClient implements Closeable {
     private ServerListFactory serverListFactory;
     
     protected BlockingQueue<ConnectionEvent> eventLinkedBlockingQueue = new LinkedBlockingQueue<>();
-    
+
+    //使用 volatile 保证rpcClientStatus多线程模式下的不可见
     protected volatile AtomicReference<RpcClientStatus> rpcClientStatus = new AtomicReference<>(
             RpcClientStatus.WAIT_INIT);
     
@@ -243,7 +244,8 @@ public abstract class RpcClient implements Closeable {
             
         }
     }
-    
+
+    //此方法是finalf方式，不能重写
     /**
      * Start this client.
      */
@@ -277,20 +279,25 @@ public abstract class RpcClient implements Closeable {
                 }
             }
         });
-        
+
+        //健康检查线程池
         clientEventExecutor.submit(() -> {
             while (true) {
                 try {
+                    //如果客户端已经处于离线状态，不继续检测
                     if (isShutdown()) {
                         break;
                     }
                     ReconnectContext reconnectContext = reconnectionSignal.poll(rpcClientConfig.connectionKeepAlive(),
                             TimeUnit.MILLISECONDS);
                     if (reconnectContext == null) {
+                        //检测条件： 当前时间 - 上次检测时间 >= 连接保活时间
                         // check alive time.
                         if (System.currentTimeMillis() - lastActiveTimeStamp >= rpcClientConfig.connectionKeepAlive()) {
+                            //健康检查
                             boolean isHealthy = healthCheck();
                             if (!isHealthy) {
+                                //
                                 if (currentConnection == null) {
                                     continue;
                                 }
@@ -312,6 +319,7 @@ public abstract class RpcClient implements Closeable {
                                 }
                                 
                             } else {
+                                //重置最后存活的时间戳
                                 lastActiveTimeStamp = System.currentTimeMillis();
                                 continue;
                             }

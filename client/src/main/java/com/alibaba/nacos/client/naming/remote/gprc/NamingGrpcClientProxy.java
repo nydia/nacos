@@ -100,6 +100,7 @@ public class NamingGrpcClientProxy extends AbstractNamingClientProxy {
                 RpcClientTlsConfig.properties(properties.asProperties()));
         this.redoService = new NamingGrpcRedoService(this);
         NAMING_LOGGER.info("Create naming rpc client for uuid->{}", uuid);
+        //启动客户端线程
         start(serverListFactory, serviceInfoHolder);
     }
     
@@ -107,6 +108,7 @@ public class NamingGrpcClientProxy extends AbstractNamingClientProxy {
         rpcClient.serverListFactory(serverListFactory);
         rpcClient.registerConnectionListener(redoService);
         rpcClient.registerServerRequestHandler(new NamingPushRequestHandler(serviceInfoHolder));
+        //启动rpcClient （包括健康检查）
         rpcClient.start();
         NotifyCenter.registerSubscriber(this);
     }
@@ -352,12 +354,14 @@ public class NamingGrpcClientProxy extends AbstractNamingClientProxy {
     public boolean serverHealthy() {
         return rpcClient.isRunning();
     }
-    
+
+    //作用：使用rpcClient注册服务实例
     private <T extends Response> T requestToServer(AbstractNamingRequest request, Class<T> responseClass)
             throws NacosException {
         try {
             request.putAllHeader(
                     getSecurityHeaders(request.getNamespace(), request.getGroupName(), request.getServiceName()));
+            //请求服务
             Response response =
                     requestTimeout < 0 ? rpcClient.request(request) : rpcClient.request(request, requestTimeout);
             if (ResponseCode.SUCCESS.getCode() != response.getResultCode()) {

@@ -16,6 +16,7 @@
 
 package com.alibaba.nacos.common.remote;
 
+//连接类型，目前只有grpc，估计后面还有其他的rpc实现
 /**
  * ConnectionType.
  *
