@@ -19,6 +19,7 @@ package com.alibaba.nacos.client.monitor;
 import io.prometheus.client.Gauge;
 import io.prometheus.client.Histogram;
 
+//metrics数据 监控
 /**
  * Metrics Monitor.
  *
@@ -28,7 +29,8 @@ public class MetricsMonitor {
     
     private static final Gauge NACOS_MONITOR = Gauge.build().name("nacos_monitor").labelNames("module", "name")
             .help("nacos_monitor").register();
-    
+
+    //直方图
     private static final Histogram NACOS_CLIENT_REQUEST_HISTOGRAM = Histogram.build()
             .labelNames("module", "method", "url", "code").name("nacos_client_request").help("nacos_client_request")
             .register();

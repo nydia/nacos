@@ -97,7 +97,7 @@ public class WebUtils {
      * @param encoding encode
      * @return Decoded data
      */
-    private static String resolveValue(String value, String encoding) {
+    private static String resolveValue(String value, String encoding) {//解码目标值
         if (StringUtils.isEmpty(encoding)) {
             encoding = StandardCharsets.UTF_8.name();
         }

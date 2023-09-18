@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.alibaba.nacos.client.utils.LogUtils.NAMING_LOGGER;
 
+//故障转移响应器
 /**
  * Failover reactor.
  *

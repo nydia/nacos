@@ -86,7 +86,8 @@ public class HealthController {
                 + ", local port:" + EnvUtil.getPort());
         return ResponseEntity.ok(result);
     }
-    
+
+    //更新实例的健康状态,仅在集群的健康检查关闭时才生效,当集群配置了健康检查时,该接口会返回错误
     /**
      * Update health check for instance.
      *

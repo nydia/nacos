@@ -88,7 +88,8 @@ public class HealthController {
         
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Naming is not in readiness");
     }
-    
+
+    //配置 就绪探测
     private boolean isConfigReadiness() {
         // check db
         try {
@@ -99,7 +100,8 @@ public class HealthController {
         }
         return false;
     }
-    
+
+    //注册服务 就绪探测
     private boolean isNamingReadiness(HttpServletRequest request) {
         try {
             apiCommands.metrics(request);

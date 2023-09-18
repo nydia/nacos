@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 import static com.alibaba.nacos.client.constant.Constants.Security.SECURITY_INFO_REFRESH_INTERVAL_MILLS;
 import static com.alibaba.nacos.client.utils.LogUtils.NAMING_LOGGER;
 
+//命名服务客户端代理的委托类
 /**
  * Delegate of naming client proxy.
  *

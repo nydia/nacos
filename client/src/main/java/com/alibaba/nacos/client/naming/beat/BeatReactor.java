@@ -55,7 +55,8 @@ public class BeatReactor implements Closeable {
     private final NamingHttpClientProxy serverProxy;
     
     private boolean lightBeatEnabled = false;
-    
+
+    //存储心跳检测的集合
     public final Map<String, BeatInfo> dom2Beat = new ConcurrentHashMap<>();
     
     public BeatReactor(NamingHttpClientProxy serverProxy) {
@@ -67,7 +68,7 @@ public class BeatReactor implements Closeable {
         int threadCount = initClientBeatThreadCount(properties);
         this.executorService = new ScheduledThreadPoolExecutor(threadCount, r -> {
             Thread thread = new Thread(r);
-            thread.setDaemon(true);
+            thread.setDaemon(true);//设置成守护线程
             thread.setName("com.alibaba.nacos.naming.beat.sender");
             return thread;
         });
