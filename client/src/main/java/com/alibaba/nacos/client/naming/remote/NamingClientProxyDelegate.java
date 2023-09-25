@@ -64,7 +64,9 @@ public class NamingClientProxyDelegate implements NamingClientProxy {
     private final SecurityProxy securityProxy;
     
     private ScheduledExecutorService executorService;
-    
+
+
+    //命名服务客户端代理委托类
     public NamingClientProxyDelegate(String namespace, ServiceInfoHolder serviceInfoHolder, NacosClientProperties properties,
             InstancesChangeNotifier changeNotifier) throws NacosException {
         this.serviceInfoUpdateService = new ServiceInfoUpdateService(properties, serviceInfoHolder, this,
@@ -75,6 +77,7 @@ public class NamingClientProxyDelegate implements NamingClientProxy {
                 NamingHttpClientManager.getInstance().getNacosRestTemplate());
         initSecurityProxy(properties);
         this.httpClientProxy = new NamingHttpClientProxy(namespace, securityProxy, serverListManager, properties);
+        //grpc客户端代理构建：里面包括了健康检查
         this.grpcClientProxy = new NamingGrpcClientProxy(namespace, securityProxy, serverListManager, properties,
                 serviceInfoHolder);
     }

@@ -79,7 +79,7 @@ public class NacosNamingService implements NamingService {
     public NacosNamingService(String serverList) throws NacosException {
         Properties properties = new Properties();
         properties.setProperty(PropertyKeyConst.SERVER_ADDR, serverList);
-        //初始化相关啊参数
+        //初始化相关参数
         init(properties);
     }
     

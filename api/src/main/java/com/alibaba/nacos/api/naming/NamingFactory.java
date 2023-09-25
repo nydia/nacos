@@ -56,6 +56,7 @@ public class NamingFactory {
         try {
             Class<?> driverImplClass = Class.forName("com.alibaba.nacos.client.naming.NacosNamingService");
             Constructor constructor = driverImplClass.getConstructor(Properties.class);
+            //使用构造函数创建实例，从传参的方式我们知道构造函数是 NamingService的实现：NacosNamingService(Properties properties)
             return (NamingService) constructor.newInstance(properties);
         } catch (Throwable e) {
             throw new NacosException(NacosException.CLIENT_INVALID_PARAM, e);

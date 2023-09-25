@@ -245,7 +245,7 @@ public abstract class RpcClient implements Closeable {
         }
     }
 
-    //此方法是finalf方式，不能重写
+    //此方法是final方式，不能重写
     /**
      * Start this client.
      */
@@ -297,7 +297,6 @@ public abstract class RpcClient implements Closeable {
                             //健康检查
                             boolean isHealthy = healthCheck();
                             if (!isHealthy) {
-                                //
                                 if (currentConnection == null) {
                                     continue;
                                 }
