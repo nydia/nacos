@@ -82,7 +82,7 @@ public abstract class RpcClient implements Closeable {
     
     private final BlockingQueue<ReconnectContext> reconnectionSignal = new ArrayBlockingQueue<>(1);
     
-    protected volatile Connection currentConnection;
+    protected volatile Connection currentConnection;//rpc链接
     
     private String tenant;
     
@@ -288,6 +288,7 @@ public abstract class RpcClient implements Closeable {
                     if (isShutdown()) {
                         break;
                     }
+                    //检索并删除此队列的头部，并在必要时等待指定的等待时间，以使元素变为可用。(默认5s)
                     ReconnectContext reconnectContext = reconnectionSignal.poll(rpcClientConfig.connectionKeepAlive(),
                             TimeUnit.MILLISECONDS);
                     if (reconnectContext == null) {
@@ -306,6 +307,7 @@ public abstract class RpcClient implements Closeable {
                                 
                                 RpcClientStatus rpcClientStatus = RpcClient.this.rpcClientStatus.get();
                                 if (RpcClientStatus.SHUTDOWN.equals(rpcClientStatus)) {
+                                    //服务停止就停止健康检查
                                     break;
                                 }
                                 
@@ -441,20 +443,25 @@ public abstract class RpcClient implements Closeable {
         }
         closeConnection(currentConnection);
     }
-    
+
+    //健康检查
     private boolean healthCheck() {
+        //构建参数
         HealthCheckRequest healthCheckRequest = new HealthCheckRequest();
         if (this.currentConnection == null) {
             return false;
         }
+        //重试次数，默认3次
         int reTryTimes = rpcClientConfig.healthCheckRetryTimes();
         Random random = new Random();
         while (reTryTimes >= 0) {
             reTryTimes--;
             try {
+                //第二次开始间隔 500ms
                 if (reTryTimes > 1) {
                     Thread.sleep(random.nextInt(500));
                 }
+                //使用rpc发送发送检查请求
                 Response response = this.currentConnection.request(healthCheckRequest,
                         rpcClientConfig.healthCheckTimeOut());
                 // not only check server is ok, also check connection is register.
