@@ -66,7 +66,8 @@ public class GrpcConnection extends Connection {
         super(serverInfo);
         this.executor = executor;
     }
-    
+
+    //grpc请求
     @Override
     public Response request(Request request, long timeouts) throws NacosException {
         Payload grpcRequest = GrpcUtils.convert(request);

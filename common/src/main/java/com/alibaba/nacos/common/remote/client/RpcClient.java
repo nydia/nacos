@@ -304,13 +304,15 @@ public abstract class RpcClient implements Closeable {
                                 LoggerUtils.printIfInfoEnabled(LOGGER,
                                         "[{}] Server healthy check fail, currentConnection = {}",
                                         rpcClientConfig.name(), currentConnection.getConnectionId());
-                                
+
+                                //RPC客户端状态
                                 RpcClientStatus rpcClientStatus = RpcClient.this.rpcClientStatus.get();
                                 if (RpcClientStatus.SHUTDOWN.equals(rpcClientStatus)) {
                                     //服务停止就停止健康检查
                                     break;
                                 }
-                                
+
+                                //判断目前rpc客户端的状态是否是不健康的。如果是不健康的，获取重连的上下文
                                 boolean statusFLowSuccess = RpcClient.this.rpcClientStatus.compareAndSet(
                                         rpcClientStatus, RpcClientStatus.UNHEALTHY);
                                 if (statusFLowSuccess) {
@@ -455,11 +457,11 @@ public abstract class RpcClient implements Closeable {
         int reTryTimes = rpcClientConfig.healthCheckRetryTimes();
         Random random = new Random();
         while (reTryTimes >= 0) {
-            reTryTimes--;
+            reTryTimes--;//循环次数减一
             try {
                 //第二次开始间隔 500ms
                 if (reTryTimes > 1) {
-                    Thread.sleep(random.nextInt(500));
+                    Thread.sleep(random.nextInt(500));//睡眠：500以内随意地毫秒数
                 }
                 //使用rpc发送发送检查请求
                 Response response = this.currentConnection.request(healthCheckRequest,
@@ -499,7 +501,7 @@ public abstract class RpcClient implements Closeable {
                 rpcClientStatus.set(RpcClientStatus.RUNNING);
                 return;
             }
-            
+
             LoggerUtils.printIfInfoEnabled(LOGGER, "[{}] Try to reconnect to a new server, server is {}",
                     rpcClientConfig.name(), recommendServerInfo == null ? " not appointed, will choose a random server."
                             : (recommendServerInfo.getAddress() + ", will try it once."));
