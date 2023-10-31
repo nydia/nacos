@@ -327,11 +327,13 @@ public abstract class RpcClient implements Closeable {
                                 continue;
                             }
                         } else {
+                            //如果时间没到，继续继续下一次健康检查
                             continue;
                         }
                         
                     }
-                    
+
+                    //重连上下文的服务信息不为空
                     if (reconnectContext.serverInfo != null) {
                         // clear recommend server if server is not in server list.
                         boolean serverExist = false;
