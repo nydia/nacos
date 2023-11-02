@@ -22,6 +22,8 @@ import com.alibaba.nacos.consistency.ConsistencyProtocol;
 /**
  * ap protocol.
  *
+ * AP 协议。
+ *
  * @author <a href="mailto:liaochuntao@live.com">liaochuntao</a>
  */
 @SuppressWarnings("all")

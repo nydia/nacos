@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+//与一致性协议的具体实现无关 初始化序列：init（Config）。
 /**
  * Has nothing to do with the specific implementation of the consistency protocol Initialization sequence： init(Config).
  *
@@ -38,25 +39,25 @@ import java.util.concurrent.CompletableFuture;
  * @author <a href="mailto:liaochuntao@live.com">liaochuntao</a>
  */
 public interface ConsistencyProtocol<T extends Config, P extends RequestProcessor> extends CommandOperations {
-    
+
+    //一致性协议需要的相关配置信息，例如 Raft 协议需要设置选举超时时间、Log 存放位置、快照任务执行间隔等
     /**
      * Consistency protocol initialization: perform initialization operations based on the incoming.
-     * Config 一致性协议初始化，根据Config 实现类
      *
      * @param config {@link Config}
      */
     void init(T config);
-    
+
     /**
      * Add a request handler.
      *
      * @param processors {@link RequestProcessor}
      */
     void addRequestProcessors(Collection<P> processors);
-    
+
+    //返回一致性协议的元数据信息，如 Raft 协议中的 leader、term 等元数据信息
     /**
      * Copy of metadata information for this consensus protocol.
-     * 该一致性协议的元数据信息
      *
      * @return metaData {@link ProtocolMetaData}
      */

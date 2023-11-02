@@ -19,6 +19,7 @@ package com.alibaba.nacos.core.distributed.distro.component;
 import com.alibaba.nacos.core.distributed.distro.entity.DistroData;
 import com.alibaba.nacos.core.distributed.distro.entity.DistroKey;
 
+//Distro 传输代理
 /**
  * Distro transport agent.
  *

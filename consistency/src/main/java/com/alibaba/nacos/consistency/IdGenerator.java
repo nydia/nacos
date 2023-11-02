@@ -18,6 +18,7 @@ package com.alibaba.nacos.consistency;
 
 import java.util.Map;
 
+//ID生成器。
 /**
  * Id generator.
  *

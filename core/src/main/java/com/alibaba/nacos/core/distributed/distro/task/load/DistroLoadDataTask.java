@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+//Distro加载数据任务
 /**
  * Distro load data task.
  *
@@ -88,7 +89,8 @@ public class DistroLoadDataTask implements Runnable {
             }
         }
     }
-    
+
+    //从远程加载所有数据快照
     private boolean loadAllDataSnapshotFromRemote(String resourceType) {
         DistroTransportAgent transportAgent = distroComponentHolder.findTransportAgent(resourceType);
         DistroDataProcessor dataProcessor = distroComponentHolder.findDataProcessor(resourceType);
@@ -105,6 +107,7 @@ public class DistroLoadDataTask implements Runnable {
                 Loggers.DISTRO.info("[DISTRO-INIT] it took {} ms to load snapshot {} from {} and snapshot size is {}.",
                         System.currentTimeMillis() - startTime, resourceType, each.getAddress(),
                         getDistroDataLength(distroData));
+                //数据处理器处理数据快照
                 boolean result = dataProcessor.processSnapshot(distroData);
                 Loggers.DISTRO
                         .info("[DISTRO-INIT] load snapshot {} from {} result: {}", resourceType, each.getAddress(),

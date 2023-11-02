@@ -41,6 +41,7 @@ import com.alibaba.nacos.naming.monitor.NamingTpsMonitor;
 
 import java.util.concurrent.Executor;
 
+//v2版本的 Distro 节点数据传输agent
 /**
  * Distro transport agent for v2.
  *

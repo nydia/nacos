@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+//Distro 组件持有者
 /**
  * Distro component holder.
  *

@@ -101,7 +101,7 @@ public class ProtocolManager extends MemberChangeListener implements DisposableB
     
     @PreDestroy
     @Override
-    public void destroy() {
+    public void destroy() {//销毁一致性协议
         if (Objects.nonNull(apProtocol)) {
             apProtocol.shutdown();
         }
@@ -110,7 +110,7 @@ public class ProtocolManager extends MemberChangeListener implements DisposableB
         }
     }
     
-    private void initAPProtocol() {
+    private void initAPProtocol() {//初始化ap协议
         ApplicationUtils.getBeanIfExist(APProtocol.class, protocol -> {
             Class configType = ClassUtils.resolveGenericType(protocol.getClass());
             Config config = (Config) ApplicationUtils.getBean(configType);
@@ -120,7 +120,7 @@ public class ProtocolManager extends MemberChangeListener implements DisposableB
         });
     }
     
-    private void initCPProtocol() {
+    private void initCPProtocol() {//初始化cp协议
         ApplicationUtils.getBeanIfExist(CPProtocol.class, protocol -> {
             Class configType = ClassUtils.resolveGenericType(protocol.getClass());
             Config config = (Config) ApplicationUtils.getBean(configType);

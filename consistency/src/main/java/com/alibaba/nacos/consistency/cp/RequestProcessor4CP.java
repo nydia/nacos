@@ -22,6 +22,7 @@ import com.alibaba.nacos.consistency.snapshot.SnapshotOperation;
 import java.util.Collections;
 import java.util.List;
 
+// CP 的日志处理器。
 /**
  * log processor for cp.
  *

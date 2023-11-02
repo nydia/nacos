@@ -21,6 +21,7 @@ import com.alibaba.nacos.core.utils.ClassUtils;
 
 import java.util.concurrent.ExecutorService;
 
+//协议执行器
 /**
  * ProtocolExecutor.
  *

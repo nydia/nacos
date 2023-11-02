@@ -50,7 +50,8 @@ public class DistroProtocol {
     private final DistroTaskEngineHolder distroTaskEngineHolder;
     
     private volatile boolean isInitialized = false;
-    
+
+    //Distro 协议
     public DistroProtocol(ServerMemberManager memberManager, DistroComponentHolder distroComponentHolder,
             DistroTaskEngineHolder distroTaskEngineHolder) {
         this.memberManager = memberManager;
@@ -60,26 +61,34 @@ public class DistroProtocol {
     }
     
     private void startDistroTask() {
+        //查看是否是单节点，单节点不启动相关任务
         if (EnvUtil.getStandaloneMode()) {
             isInitialized = true;
             return;
         }
+        // 开启节点间心跳检测
         startVerifyTask();
+        // 开启同步其他节点数据
         startLoadTask();
     }
-    
+
+    /**
+     * 同步其他节点数据
+     */
     private void startLoadTask() {
+        //数据加载回调函数
         DistroCallback loadCallback = new DistroCallback() {
             @Override
             public void onSuccess() {
-                isInitialized = true;
+                isInitialized = true;//设置初始化标志为 true
             }
             
             @Override
             public void onFailed(Throwable throwable) {
-                isInitialized = false;
+                isInitialized = false;//设置初始化标志为 false
             }
         };
+        // 将同步数据任务放入线程池中执行
         GlobalExecutor.submitLoadDataTask(
                 new DistroLoadDataTask(memberManager, distroComponentHolder, DistroConfig.getInstance(), loadCallback));
     }

@@ -22,7 +22,7 @@ import com.alibaba.nacos.consistency.ConsistencyProtocol;
 /**
  * cp protocol.
  *
- * cp的日志处理器
+ * cp 协议
  *
  * @author <a href="mailto:liaochuntao@live.com">liaochuntao</a>
  */
