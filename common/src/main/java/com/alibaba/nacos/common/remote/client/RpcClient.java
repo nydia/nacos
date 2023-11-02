@@ -527,15 +527,17 @@ public abstract class RpcClient implements Closeable {
             int reConnectTimes = 0;//重连次数（切换服务次数）
             int retryTurns = 0;//重试次数（请求失败重试次数）
             Exception lastException;
+            //切换nacos server没有成功则会一直重试
             while (!switchSuccess && !isShutdown()) {//循环条件：服务切换未成功 && 请求客户端是否关闭
                 
                 // 1.get a new server
                 ServerInfo serverInfo = null;
                 try {
-                    //如果重连的服务为空，则随机选择一个服务
+                    //获取需要重新连接的server地址
                     serverInfo = recommendServer.get() == null ? nextRpcServer() : recommendServer.get();
                     // 2.create a new channel to new server
                     Connection connectionNew = connectToServer(serverInfo);
+                    //关闭缓存的当前连接并重定向到新的连接
                     if (connectionNew != null) {
                         LoggerUtils.printIfInfoEnabled(LOGGER,
                                 "[{}] Success to connect a server [{}], connectionId = {}", rpcClientConfig.name(),
@@ -553,7 +555,7 @@ public abstract class RpcClient implements Closeable {
                         currentConnection = connectionNew;//把当前的连接置为新的连接
                         rpcClientStatus.set(RpcClientStatus.RUNNING);
                         switchSuccess = true;//切换服务成功
-                        //事件链接阻塞队列 添加新的连接事件
+                        //添加连接成功时间到阻塞队列
                         eventLinkedBlockingQueue.add(new ConnectionEvent(ConnectionEvent.CONNECTED));
                         return;
                     }
@@ -574,7 +576,7 @@ public abstract class RpcClient implements Closeable {
                 if (CollectionUtils.isEmpty(RpcClient.this.serverListFactory.getServerList())) {
                     throw new Exception("server list is empty");
                 }
-                
+                //执行到这里表示上面没有成功建立连接，打印重试次数日志
                 if (reConnectTimes > 0
                         && reConnectTimes % RpcClient.this.serverListFactory.getServerList().size() == 0) {
                     LoggerUtils.printIfInfoEnabled(LOGGER,
@@ -589,7 +591,8 @@ public abstract class RpcClient implements Closeable {
                 }
                 
                 reConnectTimes++;
-                
+
+                //重试时等待特定的时间
                 try {
                     // sleep x milliseconds to switch next server.
                     if (!isRunning()) {
