@@ -20,6 +20,7 @@ import com.alibaba.nacos.consistency.entity.ReadRequest;
 import com.alibaba.nacos.consistency.entity.Response;
 import com.alibaba.nacos.consistency.entity.WriteRequest;
 
+//可以通过SPI或Spring发现，这个接口只是一个函数定义接口。不同的一致性协议有其 pwd LogDispatcher。不建议直接实现此接口。
 /**
  * Can be discovered through SPI or Spring, This interface is just a function definition interface. Different
  * consistency protocols have their pwd

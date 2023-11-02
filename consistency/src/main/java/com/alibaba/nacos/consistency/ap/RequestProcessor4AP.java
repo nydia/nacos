@@ -21,6 +21,8 @@ import com.alibaba.nacos.consistency.RequestProcessor;
 /**
  * log processor for ap.
  *
+ * ap的日志处理器
+ *
  * @author <a href="mailto:liaochuntao@live.com">liaochuntao</a>
  */
 @SuppressWarnings("all")
