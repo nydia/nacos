@@ -178,6 +178,7 @@ public abstract class RpcClient implements Closeable {
         }
     }
     
+    //客户端新连接时候通知
     /**
      * Notify when client new connected.
      */
@@ -252,7 +253,8 @@ public abstract class RpcClient implements Closeable {
      * Start this client.
      */
     public final void start() throws NacosException {
-        
+
+        //如果当前的rpc客户端已经初始化好了，就设置成启动
         boolean success = rpcClientStatus.compareAndSet(RpcClientStatus.INITIALIZED, RpcClientStatus.STARTING);
         if (!success) {
             return;
@@ -300,9 +302,11 @@ public abstract class RpcClient implements Closeable {
                         if (System.currentTimeMillis() - lastActiveTimeStamp >= rpcClientConfig.connectionKeepAlive()) {
                             //健康检查
                             boolean isHealthy = healthCheck();
+                            //健康检查不通过
                             if (!isHealthy) {
                                 //健康检查不通过
 
+                                //当前连接为空
                                 if (currentConnection == null) {
                                     //当前连接为空，继续当前检查检查继续
                                     continue;
@@ -313,6 +317,7 @@ public abstract class RpcClient implements Closeable {
 
                                 //RPC客户端状态
                                 RpcClientStatus rpcClientStatus = RpcClient.this.rpcClientStatus.get();
+                                //如果当前RpcClientStatus的状态关闭了则不进行健康检查了
                                 if (RpcClientStatus.SHUTDOWN.equals(rpcClientStatus)) {
                                     //服务停止就停止健康检查
                                     break;
@@ -322,8 +327,10 @@ public abstract class RpcClient implements Closeable {
                                 boolean statusFLowSuccess = RpcClient.this.rpcClientStatus.compareAndSet(
                                         rpcClientStatus, RpcClientStatus.UNHEALTHY);
                                 if (statusFLowSuccess) {
+                                    //设置重连的上下文
                                     reconnectContext = new ReconnectContext(null, false);
                                 } else {
+                                    //进行下一次健康检查
                                     continue;
                                 }
                                 
@@ -332,6 +339,7 @@ public abstract class RpcClient implements Closeable {
 
                                 //重置最后存活的时间戳
                                 lastActiveTimeStamp = System.currentTimeMillis();
+                                //健康检查正常则重新进行下一次检查
                                 continue;
                             }
                         } else {
